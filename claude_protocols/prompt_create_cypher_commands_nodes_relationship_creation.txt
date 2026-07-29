@@ -1,0 +1,39 @@
+Claude Sonnet 4.6 – Low – 29.06.2026
+
+Prompt:
+    Fertige mir auf Basis der Datei koloniale_institute_final.json 
+    einen Cypher-Befehlkatalog an, um in einer neo4j-Graphdatenbank 
+    alle in ihr erhaltenen Nodes und Beziehungen zu kreieren.
+
+Response:
+    (Ran 2 commands, viewed a file, read a file
+    - Loaded skill
+    - Generate Cypher commands from the JSON data
+    - Preview the generated file
+    - Presented file
+    - Done)
+
+    Die Cypher-Datei ist fertig. Sie enthält 864 Zeilen und ist in fünf Abschnitte gegliedert:
+
+    1. Constraints & Indexes — stellt Eindeutigkeit der IDs sicher (institution_id, person_id),
+    bevor Daten geladen werden.
+
+    2. Institutionen (58 Nodes) — jede Institution wird als (:Institution)-Node mit allen vorhandenen
+    Eigenschaften angelegt (id, name, region, gruendungsdatum, sitz, adresse, kapital, grundbesitz).
+    null-Werte werden ausgelassen, sodass keine leeren Properties entstehen.
+
+    3. Personen (291 Nodes) — analog als (:Person)-Nodes mit id, vorname, nachname, beruf, ort. 
+    Literal-"null"-Strings aus den Rohdaten werden dabei bereinigt.
+
+    4. Beziehungen (418 Edges) — modelliert als (:Person)-[:HAT_POSITION {id, position}]->(:Institution). 
+    Die konkrete Rolle (z. B. "Aufsichtsrat - Vorsitzender", "Geschäftsführer") steckt in der position-Eigenschaft,
+    sodass man darauf filtern und aggregieren kann.
+
+    5. Region-Nodes (optional) — legt zusätzliche (:Region)-Nodes für die 7 Kolonialgebiete an und verbindet jede
+    Institution mit (:Institution)-[:GEHOERT_ZU]->(:Region). Das ermöglicht komfortables Filtern nach Gebiet ohne
+    String-Vergleiche auf dem Institution-Node.
+
+    Alle Befehle nutzen MERGE statt CREATE, damit das Skript idempotent ist und mehrfach ausgeführt werden kann, ohne
+    Duplikate zu erzeugen.
+
+--> Datei 'koloniale_institute_cypher.cypher', zu finden in Repository-Ordner 'CYPHER_catalogue'.
