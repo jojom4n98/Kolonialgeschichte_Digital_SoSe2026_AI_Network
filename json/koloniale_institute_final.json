@@ -1584,6 +1584,13 @@
       "ort": "Essen"
     },
     {
+      "id": "P144",
+      "vorname": null,
+      "nachname": "von Saint-Paul-Illaire",
+      "beruf": "Hofmarschall a.D.",
+      "ort": "Fischbach, Schlesien"
+    },
+    {
       "id": "P145",
       "vorname": "W.",
       "nachname": "vom Rath",
@@ -3883,7 +3890,7 @@
     },
     {
       "id": "R211",
-      "person_id": "P097",
+      "person_id": "P144",
       "institution_id": "I032",
       "position": "Verwaltungsrat"
     },
